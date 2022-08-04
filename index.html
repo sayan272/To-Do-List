@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="main.css">
+    <title>JS BASICS!!</title>
+    <style>
+        body {
+          background-image: url('backgroundimage_inner2.jpg');
+          background-repeat: no-repeat;
+          background-attachment: fixed;  
+          background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="child1">
+            <h1>My Todo List</h1>
+        </div>
+        
+        <br>
+        <p id="demo"></p>
+        <div class="child2">
+            <label class="label_name" for="work_name"><strong>Task</strong></label>
+            <input style="width: 211px;height: 22px;border:0px;border-radius:2px;" type="text" id="work_name" placeholder="Title.....">
+            <br><br>
+
+            <label class="label_name1" for="set_date"><strong>Date & Time</strong></label>
+            <input style="border:0px;border-radius:2px" type="datetime-local" id="set_date">
+            <br><br>
+        </div>
+        
+
+        <button class="addTask-Button" onclick="add_element();"><strong>Add Task</strong></button>
+         
+        <button class="deleteTask-Button" onclick="delete_element();"><strong>Delete Task</strong></button>
+        <button class="deleteTask-Button" onclick="delete_all_element();"><strong>Clear All</strong></button>
+    </div>
+    <div class="container1">
+        <ul id="myUL"></ul>
+    </div>
+    <div id="todo-list"></div>
+
+    <script>
+        class Todo{
+            constructor(todotitle,tododate)
+            {
+                this.todotitle = todotitle;
+                this.tododate = tododate;
+            }
+        };
+        const todoList = [];
+        render();
+        function render(){
+            document.getElementById('myUL').innerHTML = "";
+            let list = document.getElementById("myUL");
+  
+            todoList.forEach(function (todowork){
+                let li = document.createElement("li");
+                let myDate = todowork.tododate+"T";
+                const mydate = myDate.split('T',2)[0];
+                const mytime = myDate.split('T',2)[1];
+                li.innerText = todowork.todotitle+" "+mydate+" "+"📅"+" "+mytime+" "+"🕑";
+                list.appendChild(li);
+            });
+
+            //reset the list
+
+            /*document.getElementById('todo-list').innerHTML = "";
+            todoList.forEach(function (todowork)
+            {
+                let element = document.createElement('div');
+                element.innerText = todowork.todotitle+" "+todowork.tododate;   
+                let todos = document.getElementById('todo-list');
+                todos.appendChild(element);
+            }*/
+        }
+        // Create a "close" button and append it to each list item
+        var myNodelist = document.getElementsByTagName("LI");
+        var i;
+        for (i = 0; i < myNodelist.length; i++) {
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        myNodelist[i].appendChild(span);
+        }
+
+        // Click on a close button to hide the current list item
+        var close = document.getElementsByClassName("close");
+        var i;
+        for (i = 0; i < close.length; i++) {
+        close[i].onclick = function() {
+            var div = this.parentElement;
+            div.style.display = "none";
+        }
+        }
+
+        // Add a "checked" symbol when clicking on a list item
+        var list = document.querySelector('ul');
+        list.addEventListener('click', function(ev) {
+        if (ev.target.tagName === 'LI') {
+            ev.target.classList.toggle('checked');
+        }
+        }, false);
+
+        // Create a new list item when clicking on the "Add" button
+        function newElement() {
+        var li = document.createElement("li");
+        var inputValue = document.getElementById("myInput").value;
+        var t = document.createTextNode(inputValue);
+        li.appendChild(t);
+        if (inputValue === '') {
+            alert("You must write something!");
+        } else {
+            document.getElementById("myUL").appendChild(li);
+        }
+        document.getElementById("myInput").value = "";
+
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        li.appendChild(span);
+
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function() {
+            var div = this.parentElement;
+            div.style.display = "none";
+            }
+        }
+        }
+        function add_element()
+        {
+            let newtodo = document.getElementById("work_name");
+            let newdate = document.getElementById("set_date");
+            let title = newtodo.value;
+            let Date = newdate.value;
+            let obj = new Todo(title,Date);
+            todoList.push(obj);
+            render();
+            newtodo.value = "";
+            newdate.value = "";
+        }
+        function delete_element()
+        {
+            todoList.pop();
+            render();
+        }
+        function delete_all_element()
+        {
+            todoList.splice(0,todoList.length);
+            render();
+        }
+        
+    </script>
+</body>
+</html>
